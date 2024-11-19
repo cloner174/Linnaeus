@@ -1,4 +1,9 @@
 # Byte-compiled / optimized / DLL files
+data
+define_prob.txt
+soloution.md
+answer.md
+
 __pycache__/
 *.py[cod]
 *$py.class
