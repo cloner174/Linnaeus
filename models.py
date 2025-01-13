@@ -5,24 +5,24 @@ import torch.nn as nn
 
 class CNNModel(nn.Module):
     
-    def __init__(self):
+    def __init__(self, num_classes = 5):
         super(CNNModel, self).__init__()
         self.features = nn.Sequential(
-            nn.Conv2d(3, 16, kernel_size=3, padding=1),  # لایه پیچشی 1
+            nn.Conv2d(3, 16, kernel_size=3, padding=1),
             nn.ReLU(),
-            nn.MaxPool2d(2, 2),  # کاهش ابعاد
-            nn.Conv2d(16, 32, kernel_size=3, padding=1),  # لایه پیچشی 2
+            nn.MaxPool2d(2, 2), 
+            nn.Conv2d(16, 32, kernel_size=3, padding=1),
             nn.ReLU(),
             nn.MaxPool2d(2, 2),
-            nn.Conv2d(32, 64, kernel_size=3, padding=1),  # لایه پیچشی 3
+            nn.Conv2d(32, 64, kernel_size=3, padding=1), 
             nn.ReLU(),
             nn.MaxPool2d(2, 2)
         )
         self.classifier = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(64 * 16 * 16, 128),  # تطبیق با ابعاد خروجی لایه‌های پیچشی
+            nn.Linear(64 * 16 * 16, 128),
             nn.ReLU(),
-            nn.Linear(128, 5),  # 5 کلاس برای دسته‌بندی
+            nn.Linear(128, num_classes),
             nn.Softmax(dim=1)
         )
     
@@ -89,19 +89,19 @@ class InceptionBlock(nn.Module):
     
     def __init__(self, in_channels):
         super(InceptionBlock, self).__init__()
-        # مسیر 1x1
+        
         self.branch1 = nn.Conv2d(in_channels, 16, kernel_size=1)
-        # مسیر 3x3
+        
         self.branch3 = nn.Sequential(
             nn.Conv2d(in_channels, 16, kernel_size=1),
             nn.Conv2d(16, 24, kernel_size=3, padding=1)
         )
-        # مسیر 5x5
+        
         self.branch5 = nn.Sequential(
             nn.Conv2d(in_channels, 16, kernel_size=1),
             nn.Conv2d(16, 24, kernel_size=5, padding=2)
         )
-        # مسیر Max Pooling
+        
         self.branch_pool = nn.Sequential(
             nn.MaxPool2d(3, stride=1, padding=1),
             nn.Conv2d(in_channels, 24, kernel_size=1)
